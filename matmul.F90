@@ -28,7 +28,7 @@ subroutine mm(first, second, multiply, status)
 
 #if OPT_2
     WRITE (*, *) 'USING CACHE OPTIMIZATION'
-    ichunk = 128
+    ichunk = 512
     do jj = 1, firstRows, ichunk
         do kk = 1, secondCols, ichunk
 
