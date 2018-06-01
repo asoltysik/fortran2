@@ -1,5 +1,5 @@
 #define OPT_1 1
-#define OPT_2 0
+#define OPT_2 1
 
 module matmul
   implicit none
@@ -36,7 +36,7 @@ subroutine mm(first, second, multiply, status)
               do k = kk, min(kk + ichunk - 1, secondCols)
 #if OPT_1
                 WRITE (*, *) 'USING DOT PRODUCT OPTIMIZATION'
-                multiply(i,j)=dot_product(first(i,:),second(:,j))
+                multiply(j,k)=dot_product(first(j,:), second(:,k))
 #else
                 do i = 1, firstCols
                     multiply(j, k) = multiply(j, k) + first(j, i) * second(i, k)
