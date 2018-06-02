@@ -1,1 +1,1 @@
-`make all` to build
+`make all` twice to build
