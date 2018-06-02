@@ -2,16 +2,46 @@ program main
     use matmul
     implicit none
 
-    real (kind = 8) :: first(1,1)
-    real (kind = 8) :: second(1 ,1)
-    real (kind = 8) :: out(1,1)
-    integer (kind = 4) :: ret
+    character (len = 16) :: maxSizeString
+    integer (kind = 4) :: maxSize, conversionRes, i
 
-    first(1, 1) = 3
-    second(1, 1) = 7
+    call GET_COMMAND_ARGUMENT(1, maxSizeString)
+    read(maxSizeString, *, iostat=conversionRes) maxSize
+
+    if (conversionRes .NE. 0) then
+        WRITE (*, *) 'Error while converting to integer.'
+        stop 1
+    end if
     
-    call mm(first, second, out, ret)
+    do i = 1, maxSize, 5
+        call doMultiply(i)
+    end do
 
-    WRITE (*, *) out(1, 1)
+    contains
+    subroutine doMultiply(matrixSize)
+        implicit none
+        integer (kind = 4), intent(in) :: matrixSize
+        real (kind = 8), allocatable :: first(:, :), second(:, :), out(:, :)
+        real :: startTime, endTime
+        integer (kind = 4) :: ret
 
-end program
+        allocate(first(matrixSize, matrixSize))
+        allocate(second(matrixSize, matrixSize))
+        allocate(out(matrixSize, matrixSize))
+
+        first = 13.7623
+        second = 69.12321
+
+        call CPU_TIME(startTime)
+        call mm(first, second, out, ret)
+        call CPU_TIME(endTime)
+
+        WRITE (*, *) matrixSize, ',', (endTime - startTime)
+
+        deallocate(first)
+        deallocate(second)
+        deallocate(out)
+
+    end subroutine
+
+end program main

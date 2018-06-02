@@ -27,7 +27,6 @@ subroutine mm(first, second, multiply, status)
   end if
 
 #if OPT_2
-    WRITE (*, *) 'USING CACHE OPTIMIZATION'
     ichunk = 512
     do jj = 1, firstRows, ichunk
         do kk = 1, secondCols, ichunk
@@ -35,7 +34,6 @@ subroutine mm(first, second, multiply, status)
           do j = jj, min(jj + ichunk - 1, firstRows)
               do k = kk, min(kk + ichunk - 1, secondCols)
 #if OPT_1
-                WRITE (*, *) 'USING DOT PRODUCT OPTIMIZATION'
                 multiply(j,k)=dot_product(first(j,:), second(:,k))
 #else
                 do i = 1, firstCols
@@ -51,7 +49,6 @@ subroutine mm(first, second, multiply, status)
   do i = 1, firstRows
     do j = 1, secondCols
 #if OPT_1
-        WRITE (*, *) 'USING DOT PRODUCT OPTIMIZATION'
         multiply(i, j) = dot_product(first(i, :), second(:, j))
 #else
       do k = 1, firstCols
